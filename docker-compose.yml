@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   ollama:
     image: ollama/ollama
@@ -7,13 +5,32 @@ services:
     ports:
       - "11434:11434"
     volumes:
-      - ollama:/root/.ollama
+      - E:\AI\comfyui:/root/.ollama
     deploy:
       resources:
         reservations:
           devices:
             - capabilities: [gpu]
     restart: always
+
+#  comfyui-boot:
+#    image: yanwk/comfyui-boot:cu124-slim
+#    container_name: comfyui
+#    stdin_open: true
+#    tty: true
+#    ports:
+#      - 8188:8188
+#    volumes:
+#      - 'E:\AI\comfyui:/root'
+#    deploy:
+#      resources:
+#        reservations:
+#          devices:
+#            - driver: nvidia
+#              count: all
+#              capabilities:
+#                - gpu
+#    restart: always
 
   openwebui:
     image: ghcr.io/open-webui/open-webui:cuda
