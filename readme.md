@@ -31,6 +31,7 @@ podman machine ssh
 
 ```
 ComfyUI_Folder=
+ComfyUI_Models=
 ComfyUI_Port=8000
 Ollama_Folder=
 Openwebui_Port=3000
@@ -46,12 +47,7 @@ podman compose up -d
 podman compose down # --volumes
 ```
 
-## Use OpenWeb UI
 
-* Access OpenWebUI
-```bash
-localhost:3000
-```
 
 ### Get Models
 
@@ -59,11 +55,19 @@ localhost:3000
 	* mistral:7b
 	* llama3.1:8b
 	* qwen3:8b
+	* opus 4.6
 * Download Models Via OpenWebUI ```Admin Panel > Settings > Models > Manage```
-* Download models via command line -- TBD
+* Download models via command line ```ollama pull llama3.2:latest```
 
-### Configure OpenWebUI
+## OpenWeb UI
 
-### Configure ComfyUI
+* Access OpenWebUI
+```bash
+localhost:3000
+```
 
-### Integrate with Visual Studio Code
+## ComfyUI
+
+## Integrate with Visual Studio Code
+
+
