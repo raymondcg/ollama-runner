@@ -53,9 +53,12 @@ podman compose down # --volumes
 
 * Identify Models you want to get from (Ollama Library)[https://ollama.com/library]
 	* mistral:7b
-	* llama3.1:8b
-	* qwen3:8b
-	* opus 4.6
+	* llama3.2:1b
+	* llama4:16x17b - model requires more system memory (43.9 GiB) than is available (16.6 GiB)
+	* qwen3.5:0.8b
+	* qwen3.5:9b
+	* qwen3.5:35b
+	* qwen3-coder-next:latest
 * Download Models Via OpenWebUI ```Admin Panel > Settings > Models > Manage```
 * Download models via command line ```ollama pull llama3.2:latest```
 
