@@ -52,13 +52,13 @@ podman compose down # --volumes
 ### Get Models
 
 * Identify Models you want to get from (Ollama Library)[https://ollama.com/library]
-	* mistral:7b
-	* llama3.2:1b
+	* mistral:7b - Max Context 32,768
+	* llama3.2:1b - Max Context 128,000
 	* llama4:16x17b - model requires more system memory (43.9 GiB) than is available (16.6 GiB)
-	* qwen3.5:0.8b
-	* qwen3.5:9b
-	* qwen3.5:35b
-	* qwen3-coder-next:latest
+	* qwen3.5:0.8b - Max Context 262,144
+	* qwen3.5:9b - Max Context 262,144
+	* qwen3.5:35b - Max Context 262,144
+	* qwen3-coder-next:latest - Max Context 262,144 - model requires more system memory (22.4 GiB) than is available (16.3 GiB)
 * Download Models Via OpenWebUI ```Admin Panel > Settings > Models > Manage```
 * Download models via command line ```ollama pull llama3.2:latest```
 
@@ -74,3 +74,12 @@ localhost:3000
 ## Integrate with Visual Studio Code
 
 
+## Ollama configuration
+
+* Max context size (Ollama defaults to 2k tokens)
+```bash
+/set parameter num_ctx 32768
+/save qwen2.5max
+```
+
+* Start with Q4 model with flash attention, and test use case. If smooth go to Q2 or Q3, if problems go to Q8 or more.
