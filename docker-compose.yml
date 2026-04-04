@@ -4,29 +4,10 @@ services:
     container_name: ollama
     ports:
       - "11434:11434"
+    environment:
+      - OLLAMA_DEBUG=1 # 2 is more verbose
     volumes:
       - ${Ollama_Folder}:/root/.ollama
-    security_opt:
-      - "label=type:nvidia_container_t"
-    devices:
-      - nvidia.com/gpu=all # If there are multiple GPUs and the wrong one runs, then disable one on the host.
-    restart: always
-
-  comfyui-boot:
-    image: yanwk/comfyui-boot:cu130-slim
-    container_name: comfyui
-    ports:
-      - ${ComfyUI_Port}:8188
-    volumes:
-      - ${ComfyUI_Folder}:/root
-      - ${ComfyUI_Models}/models:/root/ComfyUI/models
-      - ${ComfyUI_Models}/hf-hub:/root/.cache/huggingface/hub
-      - ${ComfyUI_Models}/torch-hub:/root/.cache/torch/hub
-      - ${ComfyUI_Models}/input:/root/ComfyUI/input
-      - ${ComfyUI_Models}/output:/root/ComfyUI/output
-      - ${ComfyUI_Models}/workflows:/root/ComfyUI/user/default/workflows
-    environment:
-      - CLI_ARGS=
     security_opt:
       - "label=type:nvidia_container_t"
     devices:
@@ -44,8 +25,6 @@ services:
       - host.docker.internal:host-gateway
     volumes:
       - open-webui:/app/backend/data
-#    devices:
-#      - nvidia.com/gpu=all 
     restart: always
 
 volumes:
