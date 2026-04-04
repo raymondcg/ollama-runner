@@ -1,11 +1,13 @@
 services:
   ollama:
     image: ollama/ollama
-    container_name: ollama
-    ports:
-      - "11434:11434"
+    hostname: ollama
+#    ports:
+#      - "11434:11434"
     environment:
       - OLLAMA_DEBUG=1 # 2 is more verbose
+      - OLLAMA_FLASH_ATTENTION=true # Enables Context Quantization
+      - OLLAMA_KV_CACHE_TYPE=f16
     volumes:
       - ${Ollama_Folder}:/root/.ollama
     security_opt:
@@ -16,11 +18,10 @@ services:
 
   openwebui:
     image: ghcr.io/open-webui/open-webui:cuda
-    container_name: open-webui
     ports:
       - "${Openwebui_Port}:8080"
     environment:
-      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - OLLAMA_BASE_URL=http://ollama:11434 #http://host.docker.internal:11434
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:
