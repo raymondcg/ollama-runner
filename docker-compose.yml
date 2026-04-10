@@ -14,19 +14,38 @@ services:
       - "label=type:nvidia_container_t"
     devices:
       - nvidia.com/gpu=all # If there are multiple GPUs and the wrong one runs, then disable one on the host.
-    restart: always
+    restart: unless-stopped
+
+
+vllm:
+    image: vllm/vllm-openai:latest
+    hostname: vllm
+    ports:
+      - "8000:8000"
+    environment:
+      - HUGGING_FACE_HUB_TOKEN=${HF_TOKEN}
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    security_opt:
+      - "label=type:nvidia_container_t"
+    devices:
+      - nvidia.com/gpu=all # If there are multiple GPUs and the wrong one runs, then disable one on the host.
+    # Replace 'facebook/opt-125m' with your desired model
+    command: --model facebook/opt-125m
+    restart: unless-stopped
 
   openwebui:
     image: ghcr.io/open-webui/open-webui:cuda
     ports:
       - "${Openwebui_Port}:8080"
     environment:
-      - OLLAMA_BASE_URL=http://ollama:11434 #http://host.docker.internal:11434
+      - OPENAI_API_BASE_URL=http://vllm:8000/v1
+      #- OLLAMA_BASE_URL=http://ollama:11434 #http://host.docker.internal:11434
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:
       - open-webui:/app/backend/data
-    restart: always
+    restart: unless-stopped
 
 volumes:
   open-webui:
