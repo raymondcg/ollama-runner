@@ -17,7 +17,7 @@ services:
     restart: unless-stopped
 
 
-vllm:
+  vllm:
     image: vllm/vllm-openai:latest
     hostname: vllm
     ports:
