@@ -2,6 +2,7 @@ services:
   vllm:
     image: vllm/vllm-openai:latest
     hostname: vllm
+    container_name: vllm
     environment:
       - HUGGING_FACE_HUB_TOKEN=${HF_TOKEN}
     volumes:
@@ -16,10 +17,11 @@ services:
   comfyui-boot:
     image: yanwk/comfyui-boot:cu130-megapak-pt211
     hostname: comfyui
+    container_name: comfyui
     ports:
       - ${ComfyUI_Port}:8188
     volumes:
-      - ${ComfyUI_Folder}/storage-cache/dot-cache:/root/.cache:Z,U
+      #- ${ComfyUI_Folder}/storage-cache/dot-cache:/root/.cache:Z,U
       - ${ComfyUI_Folder}/storage-cache/dot-config:/root/.config:Z,U
       - ${ComfyUI_Folder}/storage-nodes/dot-local:/root/.local:Z,U
       - ${ComfyUI_Folder}/storage-nodes/custom_nodes:/root/ComfyUI/custom_nodes:Z,U
@@ -38,6 +40,8 @@ services:
   
   openwebui:
     image: ghcr.io/open-webui/open-webui:cuda
+    hostname: open-webui
+    container_name: open-webui
     environment:
       - OPENAI_API_BASE_URL=http://vllm:8000/v1
     extra_hosts:
