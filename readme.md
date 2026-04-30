@@ -35,7 +35,10 @@ ComfyUI_Models=
 ComfyUI_Port=8000
 Ollama_Folder=
 Openwebui_Port=3000
+VLLM_MODEL=facebook/opt-125m # Replace 'facebook/opt-125m' with your desired model
 ```
+
+* Create folder structure on host for volumes mapped to Comfyui.
 
 * Run Compose
 ```bash
@@ -47,7 +50,13 @@ podman compose up -d
 podman compose down # --volumes
 ```
 
+### Common Error
 
+* Occasionally you get errors and have to regenerate the CDI in ```podman machine ssh```
+```bash
+nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml && \
+nvidia-ctk cdi list
+~~~
 
 ### Get Models
 

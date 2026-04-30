@@ -1,27 +1,7 @@
 services:
-  ollama:
-    image: ollama/ollama
-    hostname: ollama
-#    ports:
-#      - "11434:11434"
-    environment:
-      - OLLAMA_DEBUG=1 # 2 is more verbose
-      - OLLAMA_FLASH_ATTENTION=true # Enables Context Quantization
-      - OLLAMA_KV_CACHE_TYPE=f16
-    volumes:
-      - ${Ollama_Folder}:/root/.ollama
-    security_opt:
-      - "label=type:nvidia_container_t"
-    devices:
-      - nvidia.com/gpu=all # If there are multiple GPUs and the wrong one runs, then disable one on the host.
-    restart: unless-stopped
-
-
   vllm:
     image: vllm/vllm-openai:latest
     hostname: vllm
-    ports:
-      - "8000:8000"
     environment:
       - HUGGING_FACE_HUB_TOKEN=${HF_TOKEN}
     volumes:
@@ -30,17 +10,36 @@ services:
       - "label=type:nvidia_container_t"
     devices:
       - nvidia.com/gpu=all # If there are multiple GPUs and the wrong one runs, then disable one on the host.
-    # Replace 'facebook/opt-125m' with your desired model
-    command: --model facebook/opt-125m
+    command: --model ${VLLM_MODEL}
     restart: unless-stopped
 
+  comfyui-boot:
+    image: yanwk/comfyui-boot:cu130-megapak-pt211
+    hostname: comfyui
+    ports:
+      - ${ComfyUI_Port}:8188
+    volumes:
+      - ${ComfyUI_Folder}/storage-cache/dot-cache:/root/.cache:Z,U
+      - ${ComfyUI_Folder}/storage-cache/dot-config:/root/.config:Z,U
+      - ${ComfyUI_Folder}/storage-nodes/dot-local:/root/.local:Z,U
+      - ${ComfyUI_Folder}/storage-nodes/custom_nodes:/root/ComfyUI/custom_nodes:Z,U
+      - ${ComfyUI_Folder}/storage-models/models:/root/ComfyUI/models:Z,U
+      - ${ComfyUI_Folder}/storage-models/hf-hub:/root/.cache/huggingface/hub:Z,U
+      - ${ComfyUI_Folder}/storage-models/torch-hub:/root/.cache/torch/hub:Z,U
+      - ${ComfyUI_Folder}/storage-user/input:/root/ComfyUI/input:Z,U
+      - ${ComfyUI_Folder}/storage-user/output:/root/ComfyUI/output:Z,U
+      - ${ComfyUI_Folder}/storage-user/user-profile:/root/ComfyUI/user:Z,U
+      - ${ComfyUI_Folder}/storage-user/user-scripts:/root/user-scripts:Z,U
+    security_opt:
+      - "label=type:nvidia_container_t"
+    devices:
+      - nvidia.com/gpu=all # If there are multiple GPUs and the wrong one runs, then disable one on the host.
+    restart: unless-stopped
+  
   openwebui:
     image: ghcr.io/open-webui/open-webui:cuda
-    ports:
-      - "${Openwebui_Port}:8080"
     environment:
       - OPENAI_API_BASE_URL=http://vllm:8000/v1
-      #- OLLAMA_BASE_URL=http://ollama:11434 #http://host.docker.internal:11434
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:
