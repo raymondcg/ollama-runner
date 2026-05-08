@@ -60,14 +60,15 @@ nvidia-ctk cdi list
 
 ### Get Models
 
-* Identify Models you want to get from (Ollama Library)[https://ollama.com/library]
-	* mistral:7b - Max Context 32,768
-	* llama3.2:1b - Max Context 128,000
-	* llama4:16x17b - model requires more system memory (43.9 GiB) than is available (16.6 GiB)
-	* qwen3.5:0.8b - Max Context 262,144
-	* qwen3.5:9b - Max Context 262,144
-	* qwen3.5:35b - Max Context 262,144
-	* qwen3-coder-next:latest - Max Context 262,144 - model requires more system memory (22.4 GiB) than is available (16.3 GiB)
+* Identify Models you want to get from (Hugging Face)[https://huggingface.co]
+	* facebook/opt-125m
+	* Qwen/Qwen3-0.6B
+	* Qwen/Qwen3.6-27B
+	* Qwen/Qwen3-Coder-Next-FP8
+	* Qwen/Qwen3-Coder-30B-A3B-Instruct
+	* mistralai/Mistral-7B-v0.1
+	* meta-llama/Llama-4-Scout-17B-16E
+	* meta-llama/Llama-3.2-1B-Instruct
 * Download Models Via OpenWebUI ```Admin Panel > Settings > Models > Manage```
 * Download models via command line ```ollama pull llama3.2:latest```
 
